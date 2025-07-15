@@ -41,6 +41,7 @@ public class AuthController {
         Map<String, Object> result = new HashMap<>();
         result.put("token", token);
         result.put("user", loginUser.getUser());
+        logger.info("返回结果: {}", result);
         return result;
     }
 }

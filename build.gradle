@@ -24,8 +24,17 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    // ✅ MyBatis Plus
-    implementation 'com.baomidou:mybatis-plus-boot-starter:3.5.5'
+    // ✅ ✅ 必须添加 Spring Security（否则 security 包报红）
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // ✅ JWT
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5' // 用 jackson 处理 json
+    // ✅ MyBatis
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+
+//    implementation 'com.baomidou:mybatis-plus-boot-starter:3.5.5'
     // ✅ 数据库连接（MySQL 或 H2）
     runtimeOnly 'com.mysql:mysql-connector-j' // 或使用 'com.h2database:h2'
     // ✅ Lombok
@@ -33,7 +42,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.32'
     // ✅ 日志（Logback 已内置于 starter）
     // implementation 'ch.qos.logback:logback-classic'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+//    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {

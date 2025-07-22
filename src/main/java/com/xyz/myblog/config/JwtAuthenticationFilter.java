@@ -121,7 +121,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         response.setStatus(status);
         response.setContentType("application/json;charset=UTF-8"); // 关键点：强制UTF-8编码
         response.setCharacterEncoding("UTF-8"); // 确保响应体编码
-        
+
         Map<String, Object> body = new HashMap<>();
         body.put("status", status);
         body.put("message", message);

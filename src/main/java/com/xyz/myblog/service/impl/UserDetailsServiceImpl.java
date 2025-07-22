@@ -1,7 +1,8 @@
-package com.xyz.myblog.service;
+package com.xyz.myblog.service.impl;
 
 import com.xyz.myblog.entity.User;
 import com.xyz.myblog.mapper.UserMapper;
+import com.xyz.myblog.service.LoginUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;

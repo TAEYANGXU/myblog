@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xyz.myblog.mapper.ArticleMapper">
+
+    <resultMap id="ArticleResultMap" type="Article">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="summary" column="summary"/>
+        <result property="status" column="status"/>
+        <result property="categoryId" column="category_id"/>
+        <result property="cover" column="cover"/>
+        <result property="viewCount" column="view_count"/>
+        <result property="likeCount" column="like_count"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <select id="selectArticleList" resultMap="ArticleResultMap">
+        SELECT * FROM article
+        <where>
+            <if test="title != null and title != ''">
+                AND title LIKE CONCAT('%', #{title}, '%')
+            </if>
+            <if test="categoryId != null">
+                AND category_id = #{categoryId}
+            </if>
+            <if test="status != null and status != ''">
+                AND status = #{status}
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="selectArticleById" resultMap="ArticleResultMap">
+        SELECT * FROM article WHERE id = #{id}
+    </select>
+
+    <insert id="insertArticle" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO article (title, content, summary, status, category_id, cover, create_time, update_time)
+        VALUES (#{title}, #{content}, #{summary}, #{status}, #{categoryId}, #{cover}, #{createTime}, #{updateTime})
+    </insert>
+
+    <update id="updateArticle">
+        UPDATE article
+        <set>
+            <if test="title != null">title = #{title},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="summary != null">summary = #{summary},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="cover != null">cover = #{cover},</if>
+            update_time = #{updateTime}
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteArticleById">
+        DELETE FROM article WHERE id = #{id}
+    </delete>
+
+    <update id="updateArticleStatus">
+        UPDATE article SET status = #{status} WHERE id = #{id}
+    </update>
+
+    <insert id="insertArticleTag">
+        INSERT INTO article_tag (article_id, tag_id) VALUES (#{articleId}, #{tagId})
+    </insert>
+
+    <delete id="deleteArticleTags">
+        DELETE FROM article_tag WHERE article_id = #{articleId}
+    </delete>
+
+    <select id="selectTagsByArticleId" resultType="Tag">
+        SELECT t.* FROM tag t
+                            INNER JOIN article_tag at ON t.id = at.tag_id
+        WHERE at.article_id = #{articleId}
+    </select>
+</mapper>

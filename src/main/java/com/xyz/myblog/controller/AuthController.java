@@ -1,7 +1,7 @@
 package com.xyz.myblog.controller;
 
 
-import com.xyz.myblog.dto.request.LoginRequest;
+import com.xyz.myblog.dto.request.LoginDTO;
 import com.xyz.myblog.service.LoginUser;
 import com.xyz.myblog.util.JwtUtil;
 import org.slf4j.Logger;
@@ -28,7 +28,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public Map<String, Object> login(@RequestBody LoginRequest request) {
+    public Map<String, Object> login(@RequestBody LoginDTO request) {
         System.out.println(new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder().encode(request.getPassword()));
         logger.info("收到登录请求: 用户名={}, 密码={}", request.getUsername(), request.getPassword());
         Authentication authentication = authenticationManager.authenticate(

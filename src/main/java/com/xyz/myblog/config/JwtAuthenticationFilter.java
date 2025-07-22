@@ -45,9 +45,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // 1. 检查Authorization头是否存在
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            sendErrorResponse(response,
-                    HttpStatus.UNAUTHORIZED.value(),
-                    "缺少或无效的Authorization头，请使用'Bearer <token>'格式");
+            filterChain.doFilter(request, response);
             return;
         }
 

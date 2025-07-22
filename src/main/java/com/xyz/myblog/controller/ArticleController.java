@@ -3,7 +3,6 @@ package com.xyz.myblog.controller;
 import com.github.pagehelper.PageInfo;
 import com.xyz.myblog.dto.request.ArticleDTO;
 import com.xyz.myblog.dto.response.ApiResponse;
-import com.xyz.myblog.dto.response.Result;
 import com.xyz.myblog.entity.Article;
 import com.xyz.myblog.service.ArticleService;
 import jakarta.validation.Valid;
@@ -20,7 +19,7 @@ public class ArticleController {
     private ArticleService articleService;
 
     @GetMapping("/list")
-    public ApiResponse listArticles(@RequestParam(defaultValue = "1") int pageNum,
+    public ApiResponse<Map<String, Object>> listArticles(@RequestParam(defaultValue = "1") int pageNum,
                                @RequestParam(defaultValue = "10") int pageSize,
                                @RequestParam(required = false) String title,
                                @RequestParam(required = false) Long categoryId,
@@ -35,33 +34,33 @@ public class ArticleController {
     }
 
     @GetMapping("/{id}")
-    public Result getArticle(@PathVariable Long id) {
+    public ApiResponse<Article> getArticle(@PathVariable Long id) {
         Article article = articleService.getArticleById(id);
-        return Result.success(article);
+        return ApiResponse.success(article);
     }
 
     @PostMapping
-    public Result createArticle(@Valid @RequestBody ArticleDTO articleDTO) {
+    public ApiResponse<String> createArticle(@Valid @RequestBody ArticleDTO articleDTO) {
         articleService.saveArticle(articleDTO);
-        return Result.success();
+        return ApiResponse.success("");
     }
 
     @PutMapping("/{id}")
-    public Result updateArticle(@PathVariable Long id, @Valid @RequestBody ArticleDTO articleDTO) {
+    public ApiResponse<String> updateArticle(@PathVariable Long id, @Valid @RequestBody ArticleDTO articleDTO) {
         articleDTO.setId(id);
         articleService.updateArticle(articleDTO);
-        return Result.success();
+        return ApiResponse.success("");
     }
 
     @DeleteMapping("/{id}")
-    public Result deleteArticle(@PathVariable Long id) {
+    public ApiResponse<String> deleteArticle(@PathVariable Long id) {
         articleService.deleteArticle(id);
-        return Result.success();
+        return ApiResponse.success("");
     }
 
     @PutMapping("/{id}/status")
-    public Result updateStatus(@PathVariable Long id, @RequestParam String status) {
+    public ApiResponse<String> updateStatus(@PathVariable Long id, @RequestParam String status) {
         articleService.updateArticleStatus(id, status);
-        return Result.success();
+        return ApiResponse.success("");
     }
 }

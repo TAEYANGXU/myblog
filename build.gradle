@@ -33,6 +33,7 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5' // 用 jackson 处理 json
     // ✅ MyBatis
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+    implementation 'com.github.pagehelper:pagehelper-spring-boot-starter:1.4.6'
 
 //    implementation 'com.baomidou:mybatis-plus-boot-starter:3.5.5'
     // ✅ 数据库连接（MySQL 或 H2）

@@ -1,8 +1,10 @@
 package com.xyz.myblog.exception;
 
+import com.xyz.myblog.dto.response.Result;
 import io.jsonwebtoken.JwtException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
@@ -27,6 +29,10 @@ public class GlobalExceptionHandler {
         Map<String, Object> result = new HashMap<>();
         result.put("code", 500);
         result.put("message", "服务器错误");
+        result.put("error", ex.getMessage());  // 添加具体错误信息
+        result.put("exception", ex.getClass().getSimpleName());  // 添加异常类型
+        // 在开发环境打印完整堆栈信息
+        ex.printStackTrace();
         return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -37,5 +43,10 @@ public class GlobalExceptionHandler {
         result.put("message", "无效的token");
         return new ResponseEntity<>(result, HttpStatus.UNAUTHORIZED);
     }
-    
+
+    @ResponseBody
+    @ExceptionHandler(RuntimeException.class)
+    public Result handleRuntimeException(RuntimeException e) {
+        return Result.error(400, e.getMessage());
+    }
 } 

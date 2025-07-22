@@ -2,6 +2,7 @@ package com.xyz.myblog.controller;
 
 
 import com.xyz.myblog.dto.request.LoginDTO;
+import com.xyz.myblog.dto.response.ApiResponse;
 import com.xyz.myblog.service.LoginUser;
 import com.xyz.myblog.util.JwtUtil;
 import org.slf4j.Logger;
@@ -28,7 +29,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public Map<String, Object> login(@RequestBody LoginDTO request) {
+    public ApiResponse<Map<String, Object>> login(@RequestBody LoginDTO request) {
         System.out.println(new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder().encode(request.getPassword()));
         logger.info("收到登录请求: 用户名={}, 密码={}", request.getUsername(), request.getPassword());
         Authentication authentication = authenticationManager.authenticate(
@@ -42,6 +43,6 @@ public class AuthController {
         result.put("token", token);
         result.put("user", loginUser.getUser());
         logger.info("返回结果: {}", result);
-        return result;
+        return ApiResponse.success(result);
     }
 }

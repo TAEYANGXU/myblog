@@ -1,6 +1,6 @@
 package com.xyz.myblog.exception;
 
-import com.xyz.myblog.dto.response.Result;
+import com.xyz.myblog.dto.response.ApiResponse;
 import io.jsonwebtoken.JwtException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
         result.put("error", ex.getMessage());  // 添加具体错误信息
         result.put("exception", ex.getClass().getSimpleName());  // 添加异常类型
         // 在开发环境打印完整堆栈信息
-        ex.printStackTrace();
+//        ex.printStackTrace();
         return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
 
     @ResponseBody
     @ExceptionHandler(RuntimeException.class)
-    public Result handleRuntimeException(RuntimeException e) {
-        return Result.error(400, e.getMessage());
+    public ApiResponse<Map<String, Object>> handleRuntimeException(RuntimeException e) {
+        return ApiResponse.error(400, e.getMessage());
     }
 } 

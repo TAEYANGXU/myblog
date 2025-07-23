@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xyz.myblog.mapper.CategoryMapper">
+
+    <!-- 修正1：resultMap的type使用全限定类名 -->
+    <resultMap id="CategoryResultMap" type="com.xyz.myblog.entity.Category">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <!-- 修正2：确保property与实体类字段匹配 -->
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <!-- 新增分类 -->
+    <insert id="insertCategory" parameterType="com.xyz.myblog.entity.Category"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO category(name, description)
+        VALUES(#{name}, #{description})
+    </insert>
+
+    <!-- 根据ID删除分类 -->
+    <delete id="deleteCategoryById" parameterType="long">
+        DELETE FROM category WHERE id = #{id}
+    </delete>
+
+    <!-- 更新分类 -->
+    <update id="updateCategory" parameterType="com.xyz.myblog.entity.Category">
+        UPDATE category
+        SET name = #{name}, description = #{description}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 修正3：resultMap引用方式 -->
+    <select id="selectAllCategories" resultMap="CategoryResultMap">
+        SELECT * FROM category
+        <where>
+            <if test="name != null and name != ''">
+                name LIKE CONCAT('%', #{name}, '%')
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+
+    <!-- 修正4：保持一致性，使用resultMap -->
+    <select id="selectCategoryById" parameterType="long"
+            resultMap="CategoryResultMap">
+        SELECT * FROM category WHERE id = #{id}
+    </select>
+
+    <!-- 修正5：使用resultMap -->
+    <select id="selectCategoryByName" parameterType="string"
+            resultMap="CategoryResultMap">
+        SELECT * FROM category WHERE name = #{name}
+    </select>
+
+</mapper>

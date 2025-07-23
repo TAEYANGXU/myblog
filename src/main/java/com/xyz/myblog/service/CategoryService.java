@@ -10,7 +10,7 @@ public interface CategoryService {
     /**
      * 获取所有分类（带分页）
      */
-    PageInfo<Category> getCategories(int pageNum, int pageSize);
+    PageInfo<Category> getCategories(int pageNum, int pageSize,String name);
 
     /**
      * 获取所有分类（不分页，用于下拉选择）

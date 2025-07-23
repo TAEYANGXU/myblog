@@ -22,10 +22,11 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping
+    @GetMapping("/list")
     public ApiResponse<Map<String, Object>> list(@RequestParam(defaultValue = "1") int pageNum,
-                            @RequestParam(defaultValue = "10") int pageSize) {
-        PageInfo<Category> pageInfo = categoryService.getCategories(pageNum, pageSize);
+                            @RequestParam(defaultValue = "10") int pageSize,
+                                                 @RequestParam(required = false) String name) {
+        PageInfo<Category> pageInfo = categoryService.getCategories(pageNum, pageSize,name);
         Map<String, Object> result = new HashMap<>();
         result.put("pageNum", pageInfo.getPageNum());
         result.put("pageSize", pageInfo.getPageSize());

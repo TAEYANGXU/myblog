@@ -1,10 +1,13 @@
 package com.xyz.myblog.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xyz.myblog.dto.request.CategoryDTO;
+import com.xyz.myblog.entity.Article;
 import com.xyz.myblog.entity.Category;
 import com.xyz.myblog.mapper.CategoryMapper;
 import com.xyz.myblog.service.CategoryService;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +19,15 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryMapper categoryMapper;
 
     @Override
-    public PageInfo<Category> getCategories(int pageNum, int pageSize) {
-        return null;
+    public PageInfo<Category> getCategories(int pageNum, int pageSize,String name) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Category> categories = categoryMapper.selectAllCategories(name);
+        return new PageInfo<>(categories);
     }
 
     @Override
     public List<Category> getAllCategories() {
-        return categoryMapper.selectAllCategories();
+        return categoryMapper.selectAllCategories("");
     }
 
     @Override
@@ -30,6 +35,7 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryMapper.selectCategoryById(id);
     }
 
+    
     @Override
     public void createCategory(Category category) {
         if (categoryMapper.selectCategoryByName(category.getName()) != null) {
@@ -49,12 +55,12 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteCategory(Long id) {
-//        // 检查是否有文章关联
-//        int articleCount = articleMapper.countByCategoryId(id);
-//        if (articleCount > 0) {
-//            throw new RuntimeException("该分类下有文章，不能删除");
-//        }
-//        categoryMapper.deleteCategoryById(id);
+        // 检查是否有文章关联
+        Category category = categoryMapper.selectCategoryById(id);
+        if (category !=  null) {
+            throw new RuntimeException("该分类下有文章，不能删除");
+        }
+        categoryMapper.deleteCategoryById(id);
     }
 
     @Override

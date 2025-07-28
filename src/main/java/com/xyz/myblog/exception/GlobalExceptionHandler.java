@@ -1,7 +1,10 @@
 package com.xyz.myblog.exception;
 
+import com.xyz.myblog.controller.AuthController;
 import com.xyz.myblog.dto.response.ApiResponse;
 import io.jsonwebtoken.JwtException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,6 +17,8 @@ import org.springframework.http.HttpStatus;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Map<String, Object>> handleBadCredentials(BadCredentialsException ex) {
@@ -47,6 +52,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(RuntimeException.class)
     public ApiResponse<Map<String, Object>> handleRuntimeException(RuntimeException e) {
+        logger.error("Runtime exception: ", e); // 添加日志
         return ApiResponse.error(400, e.getMessage());
     }
 } 

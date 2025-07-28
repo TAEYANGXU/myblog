@@ -45,9 +45,9 @@ public class ArticleController {
         return ApiResponse.success("");
     }
 
-    @PutMapping("/{id}")
-    public ApiResponse<String> updateArticle(@PathVariable Long id, @Valid @RequestBody ArticleDTO articleDTO) {
-        articleDTO.setId(id);
+    @PutMapping("/update")
+    public ApiResponse<String> updateArticle(@Valid @RequestBody ArticleDTO articleDTO) {
+//        articleDTO.setId(id);
         articleService.updateArticle(articleDTO);
         return ApiResponse.success("");
     }

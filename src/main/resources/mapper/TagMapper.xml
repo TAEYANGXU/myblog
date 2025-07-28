@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xyz.myblog.mapper.TagMapper">
+
+    <!-- 修正1：resultMap的type使用全限定类名 -->
+    <resultMap id="TagResultMap" type="com.xyz.myblog.entity.Tag">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <!-- 新增分类 -->
+    <insert id="insertTag" parameterType="com.xyz.myblog.entity.Tag"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO tag(name)
+        VALUES(#{name})
+    </insert>
+
+    <!-- 根据ID删除分类 -->
+    <delete id="deleteTagById" parameterType="long">
+        DELETE FROM tag WHERE id = #{id}
+    </delete>
+
+    <!-- 更新分类 -->
+    <update id="updateTag" parameterType="com.xyz.myblog.entity.Tag">
+        UPDATE tag
+        SET name = #{name}
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectAllTags" parameterType="string" resultMap="TagResultMap">
+        SELECT * FROM tag
+        <where>
+            <if test="_parameter != null and _parameter != ''">
+                name LIKE CONCAT('%', #{_parameter}, '%')
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+
+    <!-- 修正4：保持一致性，使用resultMap -->
+    <select id="selectTagById" parameterType="long"
+            resultMap="TagResultMap">
+        SELECT * FROM tag WHERE id = #{id}
+    </select>
+
+    <!-- 修正5：使用resultMap -->
+    <select id="selectTagByName" parameterType="string"
+            resultMap="TagResultMap">
+        SELECT * FROM tag WHERE name = #{name}
+    </select>
+
+</mapper>

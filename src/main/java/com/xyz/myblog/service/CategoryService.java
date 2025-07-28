@@ -1,7 +1,6 @@
 package com.xyz.myblog.service;
 
 import com.github.pagehelper.PageInfo;
-import com.xyz.myblog.dto.request.CategoryDTO;
 import com.xyz.myblog.entity.Category;
 
 import java.util.List;
